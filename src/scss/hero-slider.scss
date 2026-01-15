@@ -1,0 +1,292 @@
+@use "_variables.scss" as *;
+
+.split-hero {
+    position: relative;
+    height: 100vh;
+    background: #090909;
+    overflow: hidden;
+
+    .carousel,
+    .carousel-inner,
+    .carousel-item {
+        height: 100%;
+    }
+
+    .slide-wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+
+    /*
+    // SOL MEDYA ALANI
+    .hero-left {
+        flex: 0 0 70%;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+
+        // Sağ tarafın kavisli kesimi (Clip-path alternatifi ellipse)
+        clip-path: ellipse(95% 140% at 0% 50%);
+        -webkit-clip-path: ellipse(95% 140% at 0% 50%);
+
+        img,
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: zoom-and-move 20s infinite;
+        }
+
+        // Senin Before/After vinyetlerin
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: linear-gradient(
+                to bottom,
+                rgba(18, 18, 18, 0.95) 0%,
+                rgba(18, 18, 18, 0.1) 70%,
+                transparent 100%
+            );
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 6rem;
+            z-index: 3;
+            background-image: linear-gradient(180deg, transparent 0%, #090909 100%);
+            pointer-events: none;
+        }
+    }
+
+    // SAĞ İÇERİK ALANI (Efektin kalbi)
+    .hero-right {
+        flex: 0 0 30%;
+        background-color: #090909;
+        display: flex;
+        align-items: center;
+        padding: 4rem;
+        position: relative;
+        z-index: 5;
+
+        // Sola doğru kapanma animasyonu için hazırlık
+        transition:
+            transform 0.8s cubic-bezier(0.77, 0, 0.175, 1),
+            opacity 0.8s;
+
+        .static-content {
+            color: #fff;
+            .hero-title {
+                font-family: "Gotu", sans-serif;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+                color: var(--primary);
+            }
+            .hero-subtitle {
+                font-family: "Gotu", sans-serif;
+                font-size: 2.5rem;
+                font-weight: 600;
+                line-height: 1.2;
+            }
+        }
+    }
+    */
+
+    .hero-left {
+        flex: 0 0 100%; // Görsel artık tüm ekranı kaplasın
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+
+        clip-path: none;
+        -webkit-clip-path: none;
+
+        img,
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        img {
+            animation: zoom-and-move 20s infinite;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: linear-gradient(
+                to bottom,
+                rgba(18, 18, 18, 0.95) 0%,
+                rgba(18, 18, 18, 0.1) 70%,
+                transparent 100%
+            );
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 6rem;
+            z-index: 3;
+            background-image: linear-gradient(180deg, transparent 0%, #090909 100%);
+            pointer-events: none;
+        }
+    }
+
+    .hero-right {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 40%;
+        height: 100%;
+        z-index: 10;
+
+        background: linear-gradient(to right, transparent 0, rgba(9, 9, 6, 0.8) 10%, #090909 100%);
+        backdrop-filter: blur(3px);
+
+        display: flex;
+        align-items: center;
+        padding: 4rem;
+
+        clip-path: ellipse(100% 120% at 100% 50%);
+        -webkit-clip-path: ellipse(100% 120% at 100% 50%);
+
+        transition:
+            transform 0.8s cubic-bezier(0.77, 0, 0.175, 1),
+            opacity 0.8s;
+
+        .static-content {
+            color: #fff;
+            position: relative;
+            z-index: 11;
+            margin: auto;
+            max-width: 400px;
+
+            .hero-title {
+                font-family: "Gotu", sans-serif;
+                font-size: 1.5rem;
+                color: var(--primary);
+            }
+            .hero-subtitle {
+                font-size: 2.5rem;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .carousel-item-next .hero-right,
+    .carousel-item-prev .hero-right {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    .carousel-item.active .hero-right {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    @media (max-width: map-get($grid-breakpoints, sm)) {
+        height: 60vh;
+        .hero-left {
+            img,
+            video {
+                height: 75%;
+            }
+        }
+        .hero-right {
+            width: 100%;
+            height: 40%;
+            bottom: 0;
+            top: auto;
+            padding: 0.5rem 1.5rem;
+
+            background: linear-gradient(to top, #090909 80%, rgba(9, 9, 6, 0.8) 90%, transparent 100%);
+
+            clip-path: ellipse(150% 100% at 50% 100%);
+            -webkit-clip-path: ellipse(150% 100% at 50% 100%);
+
+            .static-content {
+                text-align: center;
+                margin: auto;
+                max-width: none;
+                .hero-title {
+                    font-size: 1.5rem;
+                }
+                .hero-subtitle {
+                    font-size: 1.25rem;
+                }
+            }
+        }
+    }
+}
+
+// SENİN ORİJİNAL KONTROLLERİNİN CSS'İ (Olduğu gibi ekle)
+.carousel-bottom-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 60px 0;
+    z-index: 100;
+
+    .carousel-controls {
+        display: flex;
+        gap: 10px;
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: relative;
+            width: auto;
+            height: auto;
+            opacity: 1;
+            i {
+                font-size: 2.625rem;
+                color: #fff;
+            }
+        }
+    }
+
+    @media (max-width: map-get($grid-breakpoints, sm)) {
+        padding: 0;
+        top: 35%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        .carousel-controls {
+            justify-content: space-between;
+            width: 100%;
+            .carousel-control-prev,
+            .carousel-control-next {
+                i {
+                    font-size: 2.5rem;
+                }
+            }
+        }
+    }
+}
+
+@keyframes zoom-and-move {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
