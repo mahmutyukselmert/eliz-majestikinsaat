@@ -1,5 +1,5 @@
-$primary: #f8b54a;
-$primary-hover: #f8b54a;
+$primary: #2d3e85;
+$primary-hover: #2d3e85;
 $custom-gray: rgb(124, 124, 124);
 $parlement: #23303d;
 $parlement-hover: #16212c;
@@ -18,7 +18,7 @@ $grid-breakpoints: (
   lg: 62rem,
   xl: 75rem,
   xxl: 87.5rem,
-  xxxl: 75rem
+  xxxl: 109rem
 );
 
 $container-max-widths: (
@@ -27,5 +27,5 @@ $container-max-widths: (
   lg: 60rem,
   xl: 71.25rem,
   xxl: 82.5rem,
-  xxxl: 75rem
+  xxxl: 109rem
 );

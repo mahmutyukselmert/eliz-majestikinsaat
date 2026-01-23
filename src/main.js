@@ -7,7 +7,7 @@ window.bootstrap = bootstrap;
 import Carousel from 'bootstrap/js/dist/carousel';
 import Collapse from 'bootstrap/js/dist/collapse';
 import Dropdown from 'bootstrap/js/dist/dropdown';
-//import Modal from 'bootstrap/js/dist/modal';
+import Modal from 'bootstrap/js/dist/modal';
 //import Offcanvas from 'bootstrap/js/dist/offcanvas';
 //import Popover from 'bootstrap/js/dist/popover';
 //import ScrollSpy from 'bootstrap/js/dist/scrollspy';
@@ -20,7 +20,7 @@ window.bootstrap = {
   Carousel,
   Collapse,
   Dropdown,
-  //Modal,
+  Modal,
   //Tab
 };
 
@@ -84,10 +84,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const originalSrc = logo?.getAttribute("src");
   const scrolledSrc = logo?.dataset?.scrolledimage;
 
-  window.addEventListener("scroll", function () {
+  function updateLogo() {
     if (window.scrollY > 20) {
       if (!header.classList.contains("fixed-top")) {
         header.classList.add("fixed-top");
+        if (logo && originalSrc && scrolledSrc) {
+          logo.src = scrolledSrc;
+        }
+      } else {
         if (logo && originalSrc && scrolledSrc) {
           logo.src = scrolledSrc;
         }
@@ -100,6 +104,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     }
+  }
+
+  window.addEventListener("scroll", function () {
+    updateLogo();
   });
 });
 
@@ -132,19 +140,44 @@ document.querySelectorAll('.countup').forEach(el => {
   counterObserver.observe(el);
 });
 
-//Dropdown açılır menü
+//Dropdown açılır menu 
 document.addEventListener("DOMContentLoaded", function () {
   const dropdowns = document.querySelectorAll(".custom-dropdown-menu");
+  const subDropdowns = document.querySelectorAll(".dropdown-submenu");
 
+  // --- YARDIMCI FONKSİYON: Diğer her şeyi kapatır ---
+  const closeAllMenus = (except = null) => {
+    dropdowns.forEach((dropdown) => {
+      if (dropdown !== except) {
+        const toggle = dropdown.querySelector(".dropdown-toggle");
+        const menu = dropdown.querySelector(".dropdown-menu");
+        toggle.classList.remove("show");
+        menu.classList.remove("show");
+        // Mobil tıklama durumunu sıfırla
+        dropdown.dataset.clickedOnce = "false";
+      }
+    });
+  };
+
+  const closeAllSubMenus = (parent, except = null) => {
+    const subs = parent.querySelectorAll(".dropdown-submenu");
+    subs.forEach((sub) => {
+      if (sub !== except) {
+        sub.querySelector(".dropdown-toggle").classList.remove("show");
+        sub.querySelector(".dropdown-menu").classList.remove("show");
+      }
+    });
+  };
+
+  // ANA DROPDOWNLAR
   dropdowns.forEach(function (dropdown) {
     const toggle = dropdown.querySelector(".dropdown-toggle");
     const menu = dropdown.querySelector(".dropdown-menu");
-
-    let clickedOnce = false;
     let closeTimeout = null;
 
     const openMenu = () => {
       clearTimeout(closeTimeout);
+      closeAllMenus(dropdown); // 👈 Yeni açılan hariç diğerlerini kapat
       toggle.classList.add("show");
       menu.classList.add("show");
     };
@@ -153,11 +186,11 @@ document.addEventListener("DOMContentLoaded", function () {
       closeTimeout = setTimeout(() => {
         toggle.classList.remove("show");
         menu.classList.remove("show");
-        clickedOnce = false;
-      }, 400); // 👈 300–500ms ideal
+        dropdown.dataset.clickedOnce = "false";
+      }, 400);
     };
 
-    // DESKTOP
+    // DESKTOP HOVER
     dropdown.addEventListener("mouseenter", () => {
       if (window.innerWidth >= 1200) openMenu();
     });
@@ -166,7 +199,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (window.innerWidth >= 1200) closeMenu();
     });
 
-    // MENU ÜZERİNE GELİNCE KAPANMASIN
     menu.addEventListener("mouseenter", () => {
       if (window.innerWidth >= 1200) clearTimeout(closeTimeout);
     });
@@ -175,63 +207,59 @@ document.addEventListener("DOMContentLoaded", function () {
       if (window.innerWidth >= 1200) closeMenu();
     });
 
-    // CLICK DAVRANIŞI
+    // CLICK (MOBİL VE DESKTOP LİNK)
     toggle.addEventListener("click", function (e) {
-      e.preventDefault();
-
       if (window.innerWidth >= 1200) {
         window.location.href = toggle.getAttribute("href");
       } else {
-        if (!clickedOnce) {
-          openMenu();
-          clickedOnce = true;
-        } else {
+        e.preventDefault();
+        // Eğer zaten açıksa linke git, kapalıysa aç
+        if (dropdown.dataset.clickedOnce === "true") {
           window.location.href = toggle.getAttribute("href");
+        } else {
+          openMenu();
+          dropdown.dataset.clickedOnce = "true";
         }
       }
     });
   });
 
-  // SUBMENU
-  const subDropdowns = document.querySelectorAll(".dropdown-submenu");
-
+  // ALT MENÜLER (SUBMENU)
   subDropdowns.forEach(function (subDropdown) {
     const subToggle = subDropdown.querySelector(".dropdown-toggle");
     const subMenu = subDropdown.querySelector(".dropdown-menu");
-
-    let closeTimeout = null;
-
-    const openSub = () => {
-      clearTimeout(closeTimeout);
-      subToggle.classList.add("show");
-      subMenu.classList.add("show");
-    };
-
-    const closeSub = () => {
-      closeTimeout = setTimeout(() => {
-        subToggle.classList.remove("show");
-        subMenu.classList.remove("show");
-      }, 400);
-    };
-
-    if (window.innerWidth >= 1200) {
-      subDropdown.addEventListener("mouseenter", openSub);
-      subDropdown.addEventListener("mouseleave", closeSub);
-
-      subMenu.addEventListener("mouseenter", () => clearTimeout(closeTimeout));
-      subMenu.addEventListener("mouseleave", closeSub);
-    }
+    const parentMenu = subDropdown.closest(".dropdown-menu");
 
     subToggle.addEventListener("click", function (e) {
       if (window.innerWidth < 1200) {
         e.preventDefault();
+        e.stopPropagation(); // Üst menünün kapanmasını engelle
+
+        // Aynı seviyedeki diğer alt menüleri kapat
+        closeAllSubMenus(parentMenu, subDropdown);
+
         subToggle.classList.toggle("show");
         subMenu.classList.toggle("show");
       }
     });
+
+    // Desktop hover için alt menü desteği
+    if (window.innerWidth >= 1200) {
+      subDropdown.addEventListener("mouseenter", () => {
+        closeAllSubMenus(parentMenu, subDropdown);
+        subToggle.classList.add("show");
+        subMenu.classList.add("show");
+      });
+    }
+  });
+
+  // Dışarıya tıklandığında her şeyi kapat (Opsiyonel ama önerilir)
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".custom-dropdown-menu")) {
+      closeAllMenus();
+    }
   });
 });
-
 
 import EmblaCarousel from 'embla-carousel';
 import Autoplay from 'embla-carousel-autoplay';
@@ -244,13 +272,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const embla = EmblaCarousel(
     viewport,
     {
-      loop: true,
+      loop: false,
       align: 'start',
       slidesToScroll: 1,
     },
     [
       Autoplay({
-        delay: 3000,
+        delay: 5000,
         stopOnMouseEnter: true,
         stopOnInteraction: false,
         playOnMouseLeave: true
@@ -260,59 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelector('.next-btn')?.addEventListener('click', () => embla.scrollNext());
   document.querySelector('.prev-btn')?.addEventListener('click', () => embla.scrollPrev());
-});
-
-// Product Detail Carousel
-document.addEventListener('DOMContentLoaded', () => {
-  const viewportProductDetail = document.querySelector('#productDetailCarousel .embla__viewport');
-  if (!viewportProductDetail) return;
-
-  const emblaProductDetail = EmblaCarousel(
-    viewportProductDetail,
-    {
-      loop: true,
-      align: 'start',
-      slidesToScroll: 1,
-    },
-    [
-      Autoplay({
-        delay: 3000,
-        stopOnMouseEnter: true,
-        stopOnInteraction: false,
-        playOnMouseLeave: true
-      })
-    ]
-  );
-
-  document.querySelector('.next-btn-pd')?.addEventListener('click', () => emblaProductDetail.scrollNext());
-  document.querySelector('.prev-btn-pd')?.addEventListener('click', () => emblaProductDetail.scrollPrev());
-});
-
-// Partner Carousel
-document.addEventListener('DOMContentLoaded', () => {
-  const viewportPartners = document.querySelector('#partnerCarousel .embla__viewport');
-  if (!viewportPartners) return;
-
-  const emblaPartners = EmblaCarousel(
-    viewportPartners,
-    {
-      loop: true,
-      align: 'start',
-      slidesToScroll: 1,
-      slidesToShow: 4,
-    },
-    [
-      Autoplay({
-        delay: 3000,
-        stopOnMouseEnter: true,
-        stopOnInteraction: false,
-        playOnMouseLeave: true
-      })
-    ]
-  );
-
-  document.querySelector('.next-btn-partner')?.addEventListener('click', () => emblaPartners.scrollNext());
-  document.querySelector('.prev-btn-partner')?.addEventListener('click', () => emblaPartners.scrollPrev());
 });
 
 import { animate, stagger } from 'animejs';
@@ -445,197 +420,41 @@ document.querySelectorAll('.reveal-3d').forEach(el => {
   }, { passive: true });
 });
 
-// VIP Transfer Modal ve Konum Alma
-// VIP Transfer Modal ve Konum Alma
-const modal = document.getElementById('vip-modal');
-const buttons = document.querySelectorAll('.vip-offer-modal-btn');
-const closeBtn = document.querySelector('.close-modal');
+document.addEventListener("DOMContentLoaded", function () {
+  const mainCarousel = document.querySelector("#carouselProjects");
+  const modalCarouselInner = document.querySelector("#modalCarousel .carousel-inner");
+  const zoomModalElement = document.getElementById("imageZoomModal");
+  const bootstrapZoomModal = new bootstrap.Modal(zoomModalElement);
+  let modalCarouselInstance = null;
 
-// 1. Modalı Aç ve Başlangıçta GPS Konumu Dene
-buttons.forEach(button => {
-  button.addEventListener('click', function (e) {
+  const mainImages = mainCarousel.querySelectorAll(".carousel-item img");
+  modalCarouselInner.innerHTML = ""; // İçini temizle
+
+  mainImages.forEach((img, index) => {
+    const activeClass = index === 0 ? "active" : "";
+    modalCarouselInner.innerHTML += `
+            <div class="carousel-item ${activeClass}">
+                <img src="${img.src}" class="d-block mx-auto img-fluid" style="max-height: 90vh; object-fit: contain;" alt="${img.alt}">
+            </div>
+        `;
+  });
+
+  document.addEventListener("click", function (e) {
+    const trigger = e.target.closest(".zoom-trigger");
+    if (!trigger) return;
+
     e.preventDefault();
-    modal.style.display = "block";
-    setTimeout(() => modal.classList.add('active'), 10);
 
-    const originInput = document.getElementById('origin-input');
+    const parentItem = trigger.closest(".carousel-item");
+    const allItems = Array.from(parentItem.parentElement.children);
+    const clickedIndex = allItems.indexOf(parentItem);
 
-    // GPS ile konum almayı dene (Varsayılan olarak)
-    if (navigator.geolocation) {
-      originInput.value = "Konumunuz aranıyor...";
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        originInput.value = "📍 Mevcut Konumunuz Tanımlandı";
-        originInput.setAttribute('data-lat', lat);
-        originInput.setAttribute('data-lng', lng);
-      }, function () {
-        originInput.value = "";
-        originInput.placeholder = "Başlangıç adresini yazın...";
-      });
-    }
-  });
-});
-
-let currentSearchController = null; // Eski istekleri iptal etmek için
-
-function setupAutocomplete(inputId) {
-  const input = document.getElementById(inputId);
-  const suggestionsContainer = document.createElement('ul');
-  suggestionsContainer.className = 'suggestions-list list-unstyled mt-1';
-  suggestionsContainer.style.display = 'none';
-  input.parentNode.appendChild(suggestionsContainer);
-
-  let debounceTimer;
-
-  input.addEventListener('input', function () {
-    const query = this.value.trim();
-
-    // Temizleme: Eğer 3 harften azsa her şeyi sıfırla ve kapat
-    if (query.length < 3) {
-      clearTimeout(debounceTimer);
-      if (currentSearchController) currentSearchController.abort();
-      suggestionsContainer.innerHTML = '';
-      suggestionsContainer.style.display = 'none';
-      return;
+    // Modal Carousel'i başlat ve ilgili index'e git
+    if (!modalCarouselInstance) {
+      modalCarouselInstance = new bootstrap.Carousel(document.getElementById('modalCarousel'));
     }
 
-    // Debounce: Kullanıcı yazmayı bırakana kadar bekle
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      fetchResults(query, input, suggestionsContainer);
-    }, 350); // 350ms bekleme süresi
+    modalCarouselInstance.to(clickedIndex);
+    bootstrapZoomModal.show();
   });
-}
-
-function fetchResults(query, input, container) {
-  // Eğer halihazırda bir istek varsa iptal et (En önemli kısım burası!)
-  if (currentSearchController) {
-    currentSearchController.abort();
-  }
-
-  currentSearchController = new AbortController();
-  const signal = currentSearchController.signal;
-
-  // Arama başladığında minik bir efekt (Opsiyonel)
-  input.style.opacity = "0.7";
-
-  fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5&bbox=25.6,35.8,44.8,42.1`, { signal })
-    .then(response => response.json())
-    .then(data => {
-      input.style.opacity = "1";
-      container.innerHTML = '';
-
-      if (!data.features || data.features.length === 0) {
-        container.style.display = 'none';
-        return;
-      }
-
-      container.style.display = 'block';
-      data.features.forEach(feature => {
-        const props = feature.properties;
-        const name = props.name || "";
-        const city = props.city || props.state || "";
-        const street = props.street ? `, ${props.street}` : "";
-
-        const li = document.createElement('li');
-
-        const typeLabels = {
-          'historic': 'Tarihi Yer',
-          'leisure': 'Park/Alan',
-          'railway': 'İstasyon/Durak',
-          'military': 'Askeri Alan',
-          'highway': 'Yol/Servis'
-        };
-
-        const label = typeLabels[props.osm_key] || 'Konum';
-
-        li.className = 'suggestion-item p-3 cursor-pointer'; // Mobilde tıklama alanı için p-3
-        li.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
-        <div>
-            📍 <strong>${name}</strong>
-            <small style="display:block; color:#888;">${props.district || props.city}</small>
-        </div>
-        <span style="font-size:10px; background:#333; padding:2px 6px; border-radius:4px; color:#aaa;">
-            ${label}
-        </span>
-    </div>`;
-
-        li.addEventListener('click', () => {
-          input.value = `${name} ${city}`.trim();
-          const [lng, lat] = feature.geometry.coordinates;
-          input.setAttribute('data-lat', lat);
-          input.setAttribute('data-lng', lng);
-          container.innerHTML = '';
-          container.style.display = 'none';
-        });
-        container.appendChild(li);
-      });
-    })
-    .catch(err => {
-      if (err.name === 'AbortError') return; // İptal edilen istek hatasını görmezden gel
-      console.error("Arama hatası:", err);
-      input.style.opacity = "1";
-    });
-}
-
-// Başlat
-setupAutocomplete('origin-input');
-setupAutocomplete('destination-input');
-
-// 3. WhatsApp'a Gönder (Gelişmiş Rota Linki)
-document.getElementById('send-vip-request').addEventListener('click', function () {
-  const originInput = document.getElementById('origin-input');
-  const destInput = document.getElementById('destination-input');
-
-  const originName = originInput.value;
-  const destName = destInput.value;
-
-  if (!originName || !destName) {
-    alert("Lütfen her iki adresi de doldurun.");
-    return;
-  }
-
-  const oLat = originInput.getAttribute('data-lat');
-  const oLng = originInput.getAttribute('data-lng');
-  const dLat = destInput.getAttribute('data-lat');
-  const dLng = destInput.getAttribute('data-lng');
-
-  const whatsappNo = "905438952931";
-
-  let originParam = encodeURIComponent(`https://www.google.com/maps/@${oLat},${oLng},17z`);
-
-  // Koordinatlar varsa profesyonel rota linki, yoksa metin aramalı link
-  let routeUrl;
-  if (oLat && dLat) {
-    routeUrl = `https://www.google.com/maps?saddr=${oLat},${oLng}&daddr=${dLat},${dLng}&travelmode=driving`;
-  } else {
-    routeUrl = ``;
-  }
-
-  const ikonElmas = "\uD83D\uDC8E"; // 💎
-  const ikonPin = "\uD83D\uDCCD";   // 📍
-  const ikonBayrak = "\uD83C\uDFC1"; // 🏁
-  const ikonHarita = "\uD83D\uDDFA"; // 🗺️
-
-  /*const mesaj = `*💎 Yeni VIP Transfer Talebi*%0A%0A` +
-    `📍 *Nereden:* ${originParam}%0A` +
-    `🏁 *Nereye:* ${encodeURIComponent(destName)}%0A%0A` +
-    `🗺️ *Rota ve Yol Tarifi:*%0A${encodeURIComponent(routeUrl)}%0A%0A` +
-    `Bu yolculuk için fiyat teklifi alabilir miyim?`;
-
-  window.location.href = `https://wa.me/${whatsappNo}?text=${mesaj}`;*/
-
-  const hamMesaj = `*${ikonElmas} Yeni VIP Transfer Talebi*
-  ${ikonPin} *Nereden:* ${originParam}
-  ${ikonBayrak} *Nereye:* ${destName}
-  ${ikonHarita} *Rota ve Yol Tarifi:*
-  ${routeUrl}`;
-  window.location.href = `https://wa.me/${whatsappNo}?text=${encodeURIComponent(hamMesaj)}`;
-
-});
-
-document.querySelector('.close-modal').addEventListener('click', function () {
-  modal.classList.remove('active');
-  setTimeout(() => modal.style.display = "none", 300);
 });

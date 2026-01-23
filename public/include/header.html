@@ -1,48 +1,11 @@
 <header class="header-main w-100">
-    <div class="top-bar pt-2">
-        <div class="container px-md-0">
-            <div class="d-none d-sm-flex justify-content-between align-items-center">
-                <address class="contact-info d-md-flex align-items-center gap-2 ms-1">
-                    <a href="mailto:info@elizyazilim.com">
-                        <i class="icon-envelope"></i>
-                        <span class="animation-text">info@elizyazilim.com</span>
-                    </a>
-                    <a href="tel:90-850-304-49-98">
-                        <i class="icon-phone"></i>
-                        <span class="animation-text">+90 850 304 49 98</span>
-                    </a>
-                    <a href="tel:90-850-304-49-98" class="d-none d-md-flex">
-                        <i class="icon-whatsapp"></i>
-                        <span class="animation-text">+90 850 304 49 98</span>
-                    </a>
-                </address>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container px-0">
 
-                <div class="d-flex align-items-center">
-                    <div class="language-wrapper me-2">
-                        <a href="#" class="text-decoration-none">
-                            <span> EN </span>
-                        </a>
-                    </div>
-                    <hr class="vr mx-1" />
-                    <div class="social-icons d-flex gap-2 px-2">
-                        <a href="#"><i class="icon-facebook"></i></a>
-                        <a href="#"><i class="icon-logo-x"></i></a>
-                        <a href="#"><i class="icon-instagram"></i></a>
-                        <a href="#"><i class="icon-linkedin"></i></a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="container px-0">
-        <nav class="navbar navbar-expand-lg py-1">
             <div class="logo-wrapper">
-                <a class="navbar-brand text-primary fw-bold d-flex align-items-center justify-content-between"
-                    href="./">
-                    <i class="icon-gem"></i>
-                    <span class="fw-bold ms-2 animation-text">ELIZ VIP</span>
+                <a class="navbar-brand px-2 mx-auto" href="./">
+                    <img src="./assets/images/majestik-beyaz.webp" class="img-fluid" alt="Logo" height="64" width="304"
+                        data-scrolledimage="./assets/images/Majestik-Logo.webp">
                 </a>
             </div>
 
@@ -52,47 +15,90 @@
                 <i class="icon-menu-hamburger menu-open-icon"></i>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a href="index.php" class="nav-link">Ana Sayfa</a></li>
-                    <li class="nav-item"><a href="hakkimizda.php" class="nav-link">Hakkımızda</a></li>
+            <div class="collapse navbar-collapse px-5" id="navbarNav">
+                <ul class="navbar-nav ms-auto me-lg-5">
                     <li class="nav-item dropdown custom-dropdown-menu">
-                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown2">
-                            <span>Hizmetlerimiz</span>
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown">
+                            <span>KURUMSAL</span>
                             <i class="icon-angle-down"></i>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="hizmet.php?title=Ankara+VIP+Transfer">Ankara VIP Transfer</a></li>
-                            <li><a class="dropdown-item" href="hizmet.php?title=Havaalanı+Şehir+İçi+Transferi">Havaalanı Şehir İçi Transferi</a></li>
-                            <li><a class="dropdown-item" href="hizmet.php?title=Şehirler+Arası+Transfer">Şehirler Arası Transfer</a></li>
-                            <li><a class="dropdown-item" href="hizmet.php?title=Özel+Gün+ve+Etkinlik+Transferi">Özel Gün ve Etkinlik Transferi</a></li>
-                            <li><a class="dropdown-item" href="hizmet.php?title=Kurumsal+Transfer+Hizmetleri">Kurumsal Transfer Hizmetleri</a></li>
+                        <ul class="dropdown-menu ">
+                            <li><a class="dropdown-item" href="kurumsal-hakkimizda.php">Hakkımızda</a></li>
+                            <li><a class="dropdown-item" href="kurumsal-misyon-vizon.php">Vizyon & Misyon</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a href="iletisim.php" class="nav-link">BİZE ULAŞIN</a></li>
+                    <li class="nav-item dropdown custom-dropdown-menu">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown2">
+                            <span>PROJELER</span>
+                            <i class="icon-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu ">
+                            <li>
+                                <a class="dropdown-item" href="projeler.php?title=devam+eden+projeler">
+                                    Devam Eden Projeler
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="projeler.php?title=tamamlanan+projeler">
+                                    Tamamlanan Projeler
+                                </a>    
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="projeler.php?title=konut+projeleri">
+                                    Konut Projeleri
+                                </a>    
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="projeler.php?title=ticari+projeleri">
+                                    Ticari Projeler
+                                </a>    
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="projeler.php?title=kentsel+donusum+projeleri">
+                                    Kentsel Dönüşüm Projeleri
+                                </a>    
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown custom-dropdown-menu">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown2">
+                            <span>HİZMETLER</span>
+                            <i class="icon-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu ">
+                            <li>
+                                <a class="dropdown-item" href="hizmet.php?title=anahtar+teslim+insaat">Anahtar Teslim
+                                    İnşaat</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="hizmet.php?title=konut+ve+ticari+yapi+insaat">Konut ve
+                                    Ticari Yapı İnşaatı</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="hizmet.php?title=taahhut+hizmetleri">Taahhüt
+                                    Hizmetleri</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="hizmet.php?title=kentsel+donusum">Kentsel Dönüşüm</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                    href="hizmet.php?title=mimari+ve+muhendislik+danismanligi">Mimari ve Mühendislik
+                                    Danışmanlığı</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="kariyer.php" class="nav-link">KARİYER</a></li>
+                    <li class="nav-item"><a href="haberler.php" class="nav-link">HABERLER</a></li>
+                    <li class="nav-item"><a href="iletisim.php" class="nav-link">İLETİŞİM</a></li>
                 </ul>
-
-                <div class="header-right-button ms-lg-3 scroll-reveal-right">
-                    <a href="#" class="btn btn-outline-primary btn-quote rounded-pill px-4 py-2 vip-offer-modal-btn">
-                        TEKLİF AL <i class="icon-arrow-right ms-2"></i>
-                    </a>
-                </div>
+                <ul class="navbar-nav language-wrapper ms-lg-5">
+                    <li class="nav-item">
+                        <a href="#" class="text-decoration-none nav-link">TR</a>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
 </header>
-
-<div class="mobile-bar">
-    <a href="tel:90-850-304-49-98">
-        <i class="icon-phone"></i>
-        <span class="animation-text">Ara</span>
-    </a>
-    <a href="#" class="vip-offer-modal-btn rounded-pill text-primary px-4 py-2">
-        <i class="icon-gem"></i>
-        <span class="animation-text">TEKLİF AL</span>
-    </a>
-    <a href="tel:90-850-304-49-98" class="btn btn-whatsapp d-flex align-items-center justify-content-center">
-        <i class="icon-whatsapp fs-3"></i>
-        <span class="animation-text">WhatsApp</span>
-    </a>
-</div>
+<!-- /.header-main -->
