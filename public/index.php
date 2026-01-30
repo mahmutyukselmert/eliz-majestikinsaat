@@ -40,7 +40,7 @@
                             <img src="./assets/images/about-us-video-image.webp" alt="Majestik İnşaat Tanıtım Videosu" class="img-fluid shadow">
                             <div class="position-absolute">
                                 <div class="play-pulse-animation">
-                                    <a href="#" class="btn play-button" aria-label="Play Video" data-bs-toggle="modal" data-bs-target="#videoModal">
+                                    <a href="#" class="btn play-button video-play-btn" aria-label="Play Video" data-bs-toggle="modal" data-bs-target="#videoModal" data-video="https://www.youtube.com/embed/HdRQ25DCuEM">
                                         <i class="icon-play"></i>
                                     </a>
                                 </div>
@@ -261,10 +261,9 @@
                 </div>
             </div>
         </section>
-
     </main>
+
     <?php include 'include/footer.html'; ?>
-    <script src="assets/js/slider.min.js"></script> <!-- Slider JS Sadece Ana Sayfada Yüklüyorum -->
 </body>
 
 </html>

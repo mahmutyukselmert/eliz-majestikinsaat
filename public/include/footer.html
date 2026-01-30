@@ -98,17 +98,18 @@
 <script src="./assets/js/main.js"></script>
 
 <!-- Modal -->
-<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModal" aria-hidden="true">
+<div class="modal fade" id="videoModal" tabindex="-1" aria-hidden="true">
     <button type="button" class="btn-modal-close" data-bs-dismiss="modal" aria-label="Close">
         <i class="icon-close-large"></i>
     </button>
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-body">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/gtq4Zbh9uTk?si=ZQxVCrt2t3Ydrb4j"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="ratio ratio-16x9">
+                    <iframe id="modalIframe" src="" title="YouTube video player" frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen></iframe>
+                </div>
             </div>
         </div>
     </div>

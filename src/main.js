@@ -275,6 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loop: false,
       align: 'start',
       slidesToScroll: 1,
+      containScroll: 'trimSnaps',
     },
     [
       Autoplay({
@@ -286,8 +287,22 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
   );
 
-  document.querySelector('.next-btn')?.addEventListener('click', () => embla.scrollNext());
-  document.querySelector('.prev-btn')?.addEventListener('click', () => embla.scrollPrev());
+  document.querySelector('.next-btn')?.addEventListener('click', () => {
+    if (embla.canScrollNext()) {
+      embla.scrollNext();
+    } else {
+      embla.scrollTo(0); // ⬅️ en sola dön
+    }
+  });
+
+  document.querySelector('.prev-btn')?.addEventListener('click', () => {
+    if (embla.canScrollPrev()) {
+      embla.scrollPrev();
+    } else {
+      embla.scrollTo(embla.slideNodes().length - 1);
+    }
+  });
+
 });
 
 import { animate, stagger } from 'animejs';
@@ -425,9 +440,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalCarouselInner = document.querySelector("#modalCarousel .carousel-inner");
   const zoomModalElement = document.getElementById("imageZoomModal");
   const bootstrapZoomModal = new bootstrap.Modal(zoomModalElement);
+
+  if (!mainCarousel || !modalCarouselInner || !zoomModalElement) return;
+
   let modalCarouselInstance = null;
 
   const mainImages = mainCarousel.querySelectorAll(".carousel-item img");
+  if (!mainImages.length) return;
+
   modalCarouselInner.innerHTML = ""; // İçini temizle
 
   mainImages.forEach((img, index) => {
@@ -457,4 +477,127 @@ document.addEventListener("DOMContentLoaded", function () {
     modalCarouselInstance.to(clickedIndex);
     bootstrapZoomModal.show();
   });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const videoModal = document.getElementById('videoModal');
+  const iframe = document.getElementById('modalIframe');
+
+  // 1. Modal Açılma Olayı
+  videoModal.addEventListener('show.bs.modal', (event) => {
+    // Tıklanan butonu yakala
+    const button = event.relatedTarget;
+    // Video URL'sini al
+    let videoSrc = button.getAttribute('data-video');
+
+    // Autoplay parametresini ekle (Yoksa ekler, varsa dokunmaz)
+    if (videoSrc && !videoSrc.includes('autoplay=1')) {
+      videoSrc += (videoSrc.includes('?') ? '&' : '?') + 'autoplay=1';
+    }
+
+    // iframe'e kaynağı ver
+    iframe.setAttribute('src', videoSrc);
+  });
+
+  // 2. Modal Kapanma Olayı (X butonu, dışarıya tıklama veya ESC fark etmez)
+  videoModal.addEventListener('hide.bs.modal', () => {
+    // iframe kaynağını tamamen temizleyerek videoyu durdurur ve belleği boşaltır
+    iframe.setAttribute('src', '');
+  });
+});
+
+class SmartCarousel {
+  constructor(elementId, options = {}) {
+    this.container = document.getElementById(elementId);
+    if (!this.container) return;
+
+    this.carousel = new bootstrap.Carousel(this.container, {
+      interval: false, // Otomatik geçişi Bootstrap değil biz yöneteceğiz
+      pause: false,
+      keyboard: true,
+      ...options
+    });
+
+    this.timer = null;
+    this.startTime = null;
+    this.duration = 0;
+    this.init();
+  }
+
+  init() {
+    // İlk slide için başlat
+    this.playSlide();
+
+    // Slide değişim bittiğinde (Yeni slide geldiğinde)
+    this.container.addEventListener("slid.bs.carousel", () => this.playSlide());
+
+    // Slide değişim başladığında (Temizlik)
+    this.container.addEventListener("slide.bs.carousel", () => {
+      clearTimeout(this.timer);
+      this.stopAllVideos();
+      this.emitEvent('carousel:stop'); // İlerleme çubuğunu durdurmak için
+    });
+  }
+
+  playSlide() {
+    const activeItem = this.container.querySelector(".carousel-item.active");
+    if (!activeItem) return;
+
+    const type = activeItem.getAttribute("data-type");
+    const video = activeItem.querySelector("video");
+
+    if (type === "video" && video) {
+      if (video.readyState < 2) {
+        video.onloadedmetadata = () => this.handleVideo(video);
+      } else {
+        this.handleVideo(video);
+      }
+    } else {
+      this.handleImage(activeItem);
+    }
+  }
+
+  handleVideo(video) {
+    const duration = video.duration * 1000;
+    this.emitEvent('carousel:start', { duration });
+
+    video.currentTime = 0;
+    video.play().catch(err => {
+      console.warn("Otomatik oynatma engellendi, 4sn sonra geçiliyor.");
+      this.setFallbackTimer(4000);
+    });
+
+    video.onended = () => this.carousel.next();
+  }
+
+  handleImage(item) {
+    let duration = parseInt(item.getAttribute("data-interval")) || 5000;
+    this.emitEvent('carousel:start', { duration });
+
+    this.timer = setTimeout(() => {
+      this.carousel.next();
+    }, duration);
+  }
+
+  stopAllVideos() {
+    const videos = this.container.querySelectorAll("video");
+    videos.forEach(v => {
+      v.pause();
+      v.onended = null;
+    });
+  }
+
+  setFallbackTimer(ms) {
+    this.timer = setTimeout(() => this.carousel.next(), ms);
+  }
+
+  emitEvent(name, detail = {}) {
+    const event = new CustomEvent(name, { detail });
+    this.container.dispatchEvent(event);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!document.getElementById('carouselSlider')) return;
+  new SmartCarousel('carouselSlider');
 });
