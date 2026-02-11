@@ -15,7 +15,7 @@
 
         <section class="hero">
             <div id="carouselSlider" class="carousel slide">
-                <div class="carousel-inner">
+                <div class="carousel-inner black-effect">
                     <div class="carousel-item active" data-type="image" data-interval="10000">
                         <img src="./assets/images/BeykozPrive_(15).webp" alt="" class="img-fluid">
                         <div class="carousel-caption text-start">
@@ -54,7 +54,25 @@
 
         <section class="projects-section py-5">
             <div class="container">
+
                 <div class="row reveal-3d">
+                    <div class="col-lg-4">
+                        <div class="project-item three-column animation-hover mb-4">
+                            <a href="proje-detay.php">
+                                <img src="./assets/images/hero-BeykozPrive.webp" class="img-fluid" alt="...">
+                                <button class="right-button">
+                                    <i class="icon-arrow-right"></i>
+                                </button>
+                                <h3 class="position-absolute top-0 z-1 px-4 py-4 text-white fs-1">Beykoz Prive 2</h3>
+                                <div class="position-relative left-bottom-image">
+                                    <img src="./assets/images/beykoz-prive.webp" alt="" class="z-1 position-absolute bottom-0 start-5 mx-4 py-4 w-auto h-auto">
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row reveal-3d mt-3">
                     <div class="col-lg-12">
                         <div class="project-item">
                             <a href="proje-detay.php">

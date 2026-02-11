@@ -12771,6 +12771,14 @@ textarea.form-control-lg {
     transform: scale(1);
   }
 }
+@keyframes zoom-out {
+  from {
+    transform: scale(2);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 @keyframes playPulse {
   0% {
     transform: scale(1);
@@ -12784,6 +12792,20 @@ textarea.form-control-lg {
     opacity: 0;
   }
 }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fadeInUp {
+  animation-name: fadeInUp;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -14308,6 +14330,7 @@ header.fixed-top.dropdown-menu {
   left: 15%;
   align-items: center;
   display: flex;
+  z-index: 3;
 }
 #carouselSlider .carousel-inner .carousel-caption .hero-heading {
   display: flex;
@@ -14334,6 +14357,14 @@ header.fixed-top.dropdown-menu {
   order: 2;
   margin-left: 0.1rem;
   margin-top: 1rem;
+}
+#carouselSlider .carousel-inner.black-effect::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 18, 18, 0.6);
+  pointer-events: none;
+  z-index: 1;
 }
 #carouselSlider .carousel-inner::after {
   content: "";
@@ -15372,6 +15403,41 @@ body {
   max-height: 45rem;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
+}
+.projects-section .project-item.animation-hover img.img-fluid {
+  transform: scale(2);
+  transition: transform 3s ease-out;
+}
+.projects-section .project-item.animation-hover:hover img.img-fluid {
+  transform: scale(1);
+}
+.projects-section .project-item.three-column {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: fadeInUp 0.6s ease forwards;
+  height: 24rem;
+  max-height: 24rem;
+  min-height: 24rem;
+}
+.projects-section .project-item.three-column::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+  z-index: 0;
+}
+.projects-section .project-item.three-column img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s ease;
+  z-index: 0;
+}
+@media (max-width: 1650px) {
+  .projects-section .project-item.three-column {
+    height: 24rem;
+    min-height: 24rem;
+    max-height: 24rem;
+  }
 }
 .projects-section .project-item img {
   object-fit: cover;
