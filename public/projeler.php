@@ -23,7 +23,9 @@
                                 <div class="row align-items-center col-lg-10 mx-auto">
                                     <div class="col-lg-10 scroll-reveal-left">
                                         <div class="hero-heading">
-                                            <h1 class="hero-subtitle order-2 text-uppercase"><?= $_GET['title'] ?></h1>
+                                            <h1 class="hero-subtitle order-2 text-uppercase">
+                                                <?= $_GET['title'] ?>
+                                            </h1>
                                             <h2 class="hero-title order-1">PROJELER</h2>
                                         </div>
                                         <div class="hero-description mt-4 mt-lg-0">

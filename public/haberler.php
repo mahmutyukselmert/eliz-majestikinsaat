@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="card-content">
                                     <a href="haber-detay.php" class="stretched-link">
-                                        <h5 class="card-title mb-3">Majestİk İnşaat’tan Şehİr
+                                        <h5 class="card-title mb-3 fw-medium">Majestİk İnşaat’tan Şehİr
                                             Sİluetİne Değer Katan Yenİ Proje</h5>
                                     </a>
                                     <p class="card-text">Her projede estetik mimariyi sağlam yapı teknikleriyle birleştirir, yatırım değerini artıran, uzun ömürlü ve prestijli yapılar üretir. </p>

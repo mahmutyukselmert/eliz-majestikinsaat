@@ -2171,6 +2171,10 @@ textarea.form-control {
   font-weight: 300 !important;
 }
 
+.fw-medium {
+  font-weight: 500 !important;
+}
+
 .fw-semibold {
   font-weight: 600 !important;
 }
@@ -2451,6 +2455,10 @@ textarea.form-control {
 
 .icon-arrow-right:before {
   content: "\f103";
+}
+
+.icon-arrow-left:before {
+  content: "\f147";
 }
 
 .icon-logo-x:before {
@@ -2822,6 +2830,10 @@ section.reveal-3d {
   .play-pulse-animation .play-button i {
     font-size: 2.25rem;
   }
+}
+
+.start-minus-4 {
+  left: -4rem;
 }
 
 .end-minus-4 {
@@ -3338,7 +3350,7 @@ header.fixed-top.dropdown-menu {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(18, 18, 18, 0.6);
+  background: rgba(18, 18, 18, 0.3);
   pointer-events: none;
   z-index: 1;
 }
@@ -4124,7 +4136,7 @@ body {
   align-items: center;
   justify-content: center;
 }
-.homepage-projects-section .carousel-controls .carousel-control-next {
+.homepage-projects-section .carousel-controls .carousel-control-prev, .homepage-projects-section .carousel-controls .carousel-control-next {
   background-color: var(--primary);
   width: 2.875rem;
   height: 2.875rem;
@@ -4158,15 +4170,14 @@ body {
   overflow: hidden;
 }
 .projects-section .project-item.animation-hover img.img-fluid {
-  transform: scale(2);
-  transition: transform 3s ease-out;
+  transform: scale(1);
+  transition: transform 1.2s ease-in;
 }
 .projects-section .project-item.animation-hover:hover img.img-fluid {
-  transform: scale(1);
+  transform: scale(2);
 }
 .projects-section .project-item.three-column {
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  animation: fadeInUp 0.6s ease forwards;
   height: 24rem;
   max-height: 24rem;
   min-height: 24rem;

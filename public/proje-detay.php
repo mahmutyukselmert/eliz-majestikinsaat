@@ -79,6 +79,16 @@
                                 <button type="button" data-bs-target="#carouselProjects" data-bs-slide-to="3" aria-label="Slide 4"></button>
                                 <button type="button" data-bs-target="#carouselProjects" data-bs-slide-to="4" aria-label="Slide 5"></button>
                             </div>
+
+                            <div class="position-absolute top-50 start-minus-4 pointer-events-none">
+                                <div class="carousel-controls">
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselProjects" data-bs-slide="prev">
+                                        <i class="icon-arrow-left"></i>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
                                     <img src="./assets/images/BeykozPrive_24.webp" class="img-fluid" alt="...">
